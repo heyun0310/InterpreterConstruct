@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="KTest:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/KTest_jar</output-path>
+    <root id="archive" name="KTest.jar">
+      <element id="module-output" name="KTest" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/antlr/antlr4-runtime/4.7/antlr4-runtime-4.7.jar" path-in-jar="/" />
+      <element id="dir-copy" path="$PROJECT_DIR$/../实验二/KTest/src" />
+    </root>
+  </artifact>
+</component>
