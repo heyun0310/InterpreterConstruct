@@ -46,6 +46,8 @@ public class Token {
     public static final int TermExpression = 40;
     public static final int NotExpression = 41;
     public static final int RETURN = 42;
+    //public static final int POINTER = 43;
+    public static final int GetAddress = 44;
 
 
     private int type;
@@ -137,6 +139,7 @@ public class Token {
             case ID: return "LINE " + this.lineNo + ": " + this.value;
 
             case RETURN: return "LINE " + this.lineNo + ": " + this.value;
+            case GetAddress: return "LINE " + this.lineNo + ": GetAddress";
 
             default: return "LINE " + this.lineNo + ": UNKNOWN";
         }
@@ -184,8 +187,9 @@ public class Token {
             case RealNumber:
             case ID: return "" + this.value;
 
-            case RETURN: return "RETURN";
-
+            case RETURN:  return "RETURN";
+            //case POINTER: return "POINTER";
+            case GetAddress: return "GetAddress";
 
             default: return "ERROR";
 

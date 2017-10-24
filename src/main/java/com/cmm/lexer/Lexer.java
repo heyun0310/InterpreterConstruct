@@ -153,7 +153,9 @@ public class Lexer {
                 readChar();
                 if (currentChar == '&'){
                     tokenLinkedList.add(new Token(Token.ANDAND, lineNo));
-                }
+                    readChar();
+                }else
+                    tokenLinkedList.add(new Token(Token.GetAddress, lineNo));
                 continue;
             }
 

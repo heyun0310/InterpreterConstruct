@@ -89,6 +89,14 @@ public class Parser {
         {
             throw new Exception("Line" + getNextTokenLineNo() + " expects token INT/NEXT.");
         }
+        //这里MUL*作为指针符号
+        if (checkNextTokenType(Token.MUL))
+        {
+            currentToken = iterator.next();
+            for (int i = 0;i < spaceNum; i++)
+                System.out.print("     ");
+            System.out.println("|——— *");
+        }
 
         //声明语句中的自定义标识符
         if (checkNextTokenType(Token.ID))
@@ -103,6 +111,8 @@ public class Parser {
             throw new Exception("Line" + getNextTokenLineNo() + " expects token ID.");
         }
 
+
+
         //声明语句同时初始化变量中的“=”
         if (checkNextTokenType(Token.EQ))
         {
@@ -110,9 +120,32 @@ public class Parser {
                 System.out.print("     ");
             System.out.println("|——— =");
             skipNextToken(Token.EQ);
-            for (int i = 0;i < spaceNum; i++)
-                System.out.print("     ");
-            treeNode.setMiddleNode(parseExpression());
+
+            if (checkNextTokenType(Token.GetAddress))
+            {
+                //spaceNum = curSpace;
+                for (int i = 0;i < spaceNum; i++)
+                    System.out.print("     ");
+                System.out.println("|——— &");
+                skipNextToken(Token.GetAddress);
+                for (int i = 0;i < spaceNum; i++)
+                    System.out.print("     ");
+                treeNode.setMiddleNode(variableName());
+            }else if (checkNextTokenType(Token.MUL))
+            {
+                for (int i = 0; i < spaceNum;i++)
+                    System.out.print("     ");
+                System.out.println("|——— *");
+                skipNextToken(Token.MUL);
+                for (int i = 0; i < spaceNum;i++)
+                    System.out.print("     ");
+                treeNode.setMiddleNode(variableName());
+            }else
+            {
+                for (int i = 0;i < spaceNum; i++)
+                    System.out.print("     ");
+                treeNode.setMiddleNode(parseExpression());
+            }
         }else if (getNextTokenType() == Token.LBRACK)
         {
             //curPos用于找回]所在的缩进位置
@@ -316,14 +349,14 @@ public class Parser {
                     treeNode.setRightNode(twoDimArray);
                     for (int i = 0;i < spaceNum; i++)
                         System.out.print("     ");
-                    System.out.println("|——— [");
+                    System.out.println("|——— {");
                     skipNextToken(Token.LBRACE);
                     int arrayLineNo = 0;
                     while (checkNextTokenType(Token.LBRACE))
                     {
                         for (int i = 0;i < spaceNum; i++)
                             System.out.print("     ");
-                        System.out.println("|——— [");
+                        System.out.println("|——— {");
                         skipNextToken(Token.LBRACE);
                         TreeNode oneDimArray = new TreeNode(TreeNode.ARRAY_INITIALIZER);
                         twoDimArray.setChildArray(oneDimArray);
@@ -340,7 +373,7 @@ public class Parser {
                         }
                         for (int i = 0;i < spaceNum; i++)
                             System.out.print("     ");
-                        System.out.println("|——— ]");
+                        System.out.println("|——— }");
                         skipNextToken(Token.RBRACE);
                         for (int i = 0;i < spaceNum; i++)
                             System.out.print("     ");
@@ -411,9 +444,31 @@ public class Parser {
             System.out.print("     ");
         System.out.println("|——— =");
         skipNextToken(Token.EQ);
-        for (int i = 0; i < spaceNum;i++)
-            System.out.print("     ");
-        treeNode.setMiddleNode(parseExpression());
+
+        if (checkNextTokenType(Token.GetAddress))
+        {
+            for (int i = 0; i < spaceNum;i++)
+                System.out.print("     ");
+            System.out.println("|——— &");
+            skipNextToken(Token.GetAddress);
+            for (int i = 0; i < spaceNum;i++)
+                System.out.print("     ");
+            treeNode.setMiddleNode(variableName());
+        }else if (checkNextTokenType(Token.MUL))
+        {
+            for (int i = 0; i < spaceNum;i++)
+                System.out.print("     ");
+            System.out.println("|——— *");
+            skipNextToken(Token.MUL);
+            for (int i = 0; i < spaceNum;i++)
+                System.out.print("     ");
+            treeNode.setMiddleNode(variableName());
+        }else
+        {
+            for (int i = 0; i < spaceNum;i++)
+                System.out.print("     ");
+            treeNode.setMiddleNode(parseExpression());
+        }
         spaceNum = curSpaceNum;
         for (int i = 0; i < spaceNum;i++)
             System.out.print("     ");
@@ -567,9 +622,21 @@ public class Parser {
         for (int i = 0;i < spaceNum; i++)
             System.out.print("     ");
         TreeNode leftChild = logicEqualExpression();
+        treeNode.setLeftNode(leftChild);
+//        //指针赋值中的取地址符号
+//        if (checkNextTokenType(Token.GetAddress))
+//        {
+//            spaceNum = curSpace;
+//            for (int i = 0;i < spaceNum; i++)
+//                System.out.print("     ");
+//            System.out.println("|——— &");
+//            skipNextToken(Token.GetAddress);
+//            for (int i = 0;i < spaceNum; i++)
+//                System.out.print("     ");
+//            treeNode.setMiddleNode(variableName());
+//        }
         if (checkNextTokenType(Token.OROR, Token.ANDAND))
         {
-            treeNode.setLeftNode(leftChild);
             treeNode.setMiddleNode(logicOperator());
             spaceNum = curSpace;
             for (int i = 0;i < spaceNum; i++)
