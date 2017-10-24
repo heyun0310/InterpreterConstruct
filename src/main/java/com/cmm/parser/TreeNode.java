@@ -37,6 +37,8 @@ public class TreeNode {
 
     public static final int ARRAY_INITIALIZER = 14;
 
+    public static final int RETURN_STATEMENT = 15;
+
     private int nodeType;
     private int tokenType;
     private String value;

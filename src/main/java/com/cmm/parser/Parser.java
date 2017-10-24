@@ -50,6 +50,8 @@ public class Parser {
                 return parseBreakStatement();
             case Token.IF:
                 return parseIfStmt();
+            case Token.RETURN:
+                return parseReturnStatement();
             default:
                 throw new Exception("Line" + getNextTokenLineNo() + " expects token");
         }
@@ -208,6 +210,28 @@ public class Parser {
                     throw new Exception("Line" + getNextTokenLineNo() + " expects token {.");
             }
         }
+        //处理函数声明
+        else if (getNextTokenType() == Token.LPAREN)
+        {
+            for (int i = 0; i < spaceNum;i++)
+                System.out.print("     ");
+            System.out.println("|——— (");
+            skipNextToken(Token.LPAREN);
+            if (getNextTokenType() == Token.RPAREN)
+            {
+                for (int i = 0; i < spaceNum;i++)
+                    System.out.print("     ");
+                System.out.println("|——— )");
+                skipNextToken(Token.RPAREN);
+            }else
+            {
+                System.out.println("Line" + getNextTokenLineNo() + "function declarement expects token ).");
+            }
+            //用于处理函数体，即BlockStatement
+            for (int i = 0; i < spaceNum;i++)
+                System.out.print("     ");
+            variableNode.setLeftNode(parseStatement());
+         }
 
         //若同时声明多个变量，则前一variableNode结点的leftChild指向当前variaNode，middleChild指向当前parseExpression()
         //若声明的为多个数组，则rightNode指向[]中的表达式,next指向第二个[]中的表达式（二维数组）
@@ -331,10 +355,14 @@ public class Parser {
         if (!variableNodes.isEmpty())
             variableNode.setNext(variableNodes.get(0));
         spaceNum = curSpaceNum;
-        for (int i = 0;i < spaceNum; i++)
-            System.out.print("     ");
-        System.out.println("|——— ;");
-        skipNextToken(Token.SEMICOLON);
+        //为了处理函数声明，这里添加一个if（函数体结束后后面没有分号）
+        if (getNextTokenType() == Token.SEMICOLON)
+        {
+            for (int i = 0;i < spaceNum; i++)
+                System.out.print("     ");
+            System.out.println("|——— ;");
+            skipNextToken(Token.SEMICOLON);
+        }
         treeNode.setLeftNode(variableNode);
         return treeNode;
     } 
@@ -505,6 +533,27 @@ public class Parser {
                 System.out.print("     ");
             treeNode.setRightNode(parseStatement());
         }
+        return treeNode;
+    }
+
+    private static TreeNode parseReturnStatement() throws Exception
+    {
+        spaceNum++;
+        int curSpace = spaceNum;
+        System.out.println("|——— Return Statement:");
+        TreeNode treeNode = new TreeNode(TreeNode.RETURN_STATEMENT);
+        skipNextToken(Token.RETURN);
+        for (int i = 0; i < spaceNum;i++)
+            System.out.print("     ");
+        System.out.println("|——— RETURN");
+        for (int i = 0; i < spaceNum;i++)
+            System.out.print("     ");
+        treeNode.setLeftNode(parseExpression());
+        spaceNum = curSpace;
+        for (int i = 0; i < spaceNum;i++)
+            System.out.print("     ");
+        System.out.println("|——— ;");
+        skipNextToken(Token.SEMICOLON);
         return treeNode;
     }
 

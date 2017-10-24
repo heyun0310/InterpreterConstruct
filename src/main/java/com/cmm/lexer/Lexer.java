@@ -215,6 +215,8 @@ public class Lexer {
                     token.setType(Token.REAL);
                 }else if (stringBuilderString.equals("write")){
                     token.setType(Token.WRITE);
+                }else if (stringBuilderString.equals("return")){
+                    token.setType(Token.RETURN);
                 } else {
                     token.setType(Token.ID);
                     token.setValue(stringBuilderString);
