@@ -12,11 +12,11 @@ int array[2][3] = {
   block comment 
 */  
   
-//while (i < 10) i = i + 1;  
-//while (!x > 0 && i < 10) {
-//  x = x - 1;  
-//  if (i < 5) break;  
-//  else read i;  
-//}
+while (i < 10) i = i + 1;  
+while (!x > 0 && i < 10) {
+  x = x - 1;  
+  if (i < 5) break;  
+  else read i;  
+}
   
-//write x - j;
+write x - j;

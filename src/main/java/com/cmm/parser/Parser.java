@@ -341,17 +341,30 @@ public class Parser {
 
     private static TreeNode parseBlockStatement() throws Exception
     {
+        spaceNum++;
+        int curSpace = spaceNum;
         System.out.println("|———Block Statement:");
         TreeNode treeNode = new TreeNode(TreeNode.BLOCK_STATEMENT);
         TreeNode rootNode = treeNode;
         TreeNode tempNode = null;
         skipNextToken(Token.LBRACE);
+        for (int i = 0;i<spaceNum;i++)
+            System.out.print("     ");
+        System.out.println("|——— {");
+
         while (getNextTokenType()!= Token.RBRACE)
         {
+            spaceNum = curSpace;
+            for (int i = 0;i<spaceNum;i++)
+                System.out.print("     ");
             tempNode = parseStatement();
             treeNode.setNext(tempNode);
             treeNode = tempNode;
         }
+        spaceNum = curSpace;
+        for (int i = 0;i<spaceNum;i++)
+            System.out.print("     ");
+        System.out.println("|——— }");
         skipNextToken(Token.RBRACE);
         return rootNode;
     }
@@ -365,6 +378,10 @@ public class Parser {
         for (int i = 0; i < spaceNum;i++)
             System.out.print("     ");
         treeNode.setLeftNode(variableName());
+        spaceNum = curSpaceNum;
+        for (int i = 0; i < spaceNum;i++)
+            System.out.print("     ");
+        System.out.println("|——— =");
         skipNextToken(Token.EQ);
         for (int i = 0; i < spaceNum;i++)
             System.out.print("     ");
@@ -379,34 +396,70 @@ public class Parser {
 
     private static TreeNode parseReadStatement() throws Exception
     {
-        System.out.println("     |———Read Statement:");
-        System.out.print("  ");
+        spaceNum++;
+        int curSpace = spaceNum;
+        System.out.println("|———Read Statement:");
         TreeNode treeNode = new TreeNode(TreeNode.READ_STATEMENT);
         skipNextToken(Token.READ);
+        for (int i = 0; i < spaceNum;i++)
+            System.out.print("     ");
+        System.out.println("|——— READ");
+        for (int i = 0; i < spaceNum;i++)
+            System.out.print("     ");
         treeNode.setLeftNode(variableName());
+        spaceNum = curSpace;
+        for (int i = 0; i < spaceNum;i++)
+            System.out.print("     ");
+        System.out.println("|——— ;");
         skipNextToken(Token.SEMICOLON);
         return treeNode;
     }
 
     private static TreeNode parseWriteStatement() throws Exception
     {
-        System.out.println("     |———Write Statement:");
-        System.out.print("  ");
+        spaceNum++;
+        int curSpace = spaceNum;
+        System.out.println("|———Write Statement:");
         TreeNode treeNode = new TreeNode(TreeNode.WRITE_STATEMENT);
         skipNextToken(Token.WRITE);
+        for (int i = 0; i < spaceNum;i++)
+            System.out.print("     ");
+        System.out.println("|——— WRITE");
+        for (int i = 0; i < spaceNum;i++)
+            System.out.print("     ");
         treeNode.setLeftNode(parseExpression());
+        spaceNum = curSpace;
+        for (int i = 0; i < spaceNum;i++)
+            System.out.print("     ");
+        System.out.println("|——— ;");
         skipNextToken(Token.SEMICOLON);
         return treeNode;
     }
 
     private static TreeNode parseWhileStatement() throws Exception
     {
+        spaceNum++;
+        int curSpace = spaceNum;
         System.out.println("|———While Statement:");
         TreeNode treeNode = new TreeNode(TreeNode.WHILE_STATEMENT);
+        for (int i = 0;i < spaceNum; i++)
+            System.out.print("     ");
+        System.out.println("|——— While");
         skipNextToken(Token.WHILE);
+        for (int i = 0;i < spaceNum;i++)
+            System.out.print("     ");
+        System.out.println("|——— (");
         skipNextToken(Token.LPAREN);
+        for (int i = 0;i < spaceNum;i++)
+            System.out.print("     ");
         treeNode.setLeftNode(parseExpression());
+        spaceNum = curSpace;
+        for (int i = 0;i < spaceNum;i++)
+            System.out.print("     ");
+        System.out.println("|——— )");
         skipNextToken(Token.RPAREN);
+        for (int i = 0;i < spaceNum;i++)
+            System.out.print("     ");
         treeNode.setMiddleNode(parseStatement());
         return treeNode;
     }
@@ -422,16 +475,34 @@ public class Parser {
 
     private static TreeNode parseIfStmt() throws Exception
     {
+        spaceNum++;
+        int curSpace = spaceNum;
         System.out.println("|———If Statement:");
         TreeNode treeNode = new TreeNode(TreeNode.IF_STATEMENT);
         skipNextToken(Token.IF);
+        for (int i = 0;i < spaceNum;i++)
+            System.out.print("     ");
+        System.out.println("|——— IF");
         skipNextToken(Token.LPAREN);
+        for (int i = 0;i < spaceNum;i++)
+            System.out.print("     ");
+        System.out.println("|——— (");
+        for (int i = 0;i < spaceNum;i++)
+            System.out.print("     ");
         treeNode.setLeftNode(parseExpression());
         skipNextToken(Token.RPAREN);
+        spaceNum = curSpace;
+        for (int i = 0;i < spaceNum;i++)
+            System.out.print("     ");
+        System.out.println("|——— )");
+        for (int i = 0;i < spaceNum;i++)
+            System.out.print("     ");
         treeNode.setMiddleNode(parseStatement());
         if (getNextTokenType() == Token.ELSE)
         {
             skipNextToken(Token.ELSE);
+            for (int i = 0;i < spaceNum;i++)
+                System.out.print("     ");
             treeNode.setRightNode(parseStatement());
         }
         return treeNode;
@@ -440,6 +511,7 @@ public class Parser {
     private static TreeNode parseExpression()throws Exception
     {
         spaceNum++;
+        int curSpace = spaceNum;
         System.out.println("|———Expression:");
         TreeNode treeNode = new TreeNode(TreeNode.EXPRESSION);
         treeNode.setTokenType(Token.LogicOrAndExpression);
@@ -450,6 +522,11 @@ public class Parser {
         {
             treeNode.setLeftNode(leftChild);
             treeNode.setMiddleNode(logicOperator());
+            spaceNum = curSpace;
+            for (int i = 0;i < spaceNum; i++)
+                System.out.print("     ");
+            iterator.previous();
+            System.out.println("|——— " + logicOperator().getValue());
             for (int i = 0;i < spaceNum; i++)
                 System.out.print("     ");
             treeNode.setRightNode(logicEqualExpression());
@@ -483,6 +560,7 @@ public class Parser {
 
     private static TreeNode logicNotEqualExpression() throws Exception
     {
+        int curSpace = spaceNum;
         TreeNode treeNode = new TreeNode(TreeNode.EXPRESSION);
         treeNode.setTokenType(Token.LogicNotEqualExpression);
         TreeNode leftChild = addibleExpression();
@@ -490,6 +568,11 @@ public class Parser {
         {
             treeNode.setLeftNode(leftChild);
             treeNode.setMiddleNode(logicOperator());
+            spaceNum = curSpace;
+            for (int i = 0;i < spaceNum; i++)
+                System.out.print("     ");
+            iterator.previous();
+            System.out.println("|——— "+ logicOperator().getValue());
             for (int i = 0;i < spaceNum; i++)
                 System.out.print("     ");
             treeNode.setRightNode(addibleExpression());
@@ -578,6 +661,10 @@ public class Parser {
         if (checkNextTokenType(Token.BANG))
         {
             treeNode.setLeftNode(notOperator());
+            iterator.previous();
+            System.out.println("|——— "+ notOperator().getValue());
+            for (int i = 0;i < spaceNum;i++)
+                System.out.print("     ");
             treeNode.setMiddleNode(factor());
         }else
         {
@@ -644,13 +731,25 @@ public class Parser {
         if (iterator.hasNext())
         {
             currentToken = iterator.next();
-            int tokeType = currentToken.getType();
-            if (tokeType == Token.ANDAND || tokeType == Token.OROR
-                    || tokeType == Token.EQEQ || tokeType == Token.LT
-                    || tokeType == Token.NE || tokeType == Token.GT)
+            int tokenType = currentToken.getType();
+            if (tokenType == Token.ANDAND || tokenType == Token.OROR
+                    || tokenType == Token.EQEQ || tokenType == Token.LT
+                    || tokenType == Token.NE || tokenType == Token.GT)
             {
                 TreeNode treeNode = new TreeNode(TreeNode.OPERATOR);
-                treeNode.setTokenType(tokeType);
+                treeNode.setTokenType(tokenType);
+                if (tokenType == Token.ANDAND)
+                    treeNode.setValue("&&");
+                else if (tokenType == Token.OROR)
+                    treeNode.setValue("||");
+                else if (tokenType == Token.EQEQ)
+                    treeNode.setValue("==");
+                else if (tokenType == Token.LT)
+                    treeNode.setValue("<");
+                else if (tokenType == Token.NE)
+                    treeNode.setValue("<>");
+                else if (tokenType == Token.GT)
+                    treeNode.setValue(">");
                 return treeNode;
             }
         }
@@ -683,6 +782,7 @@ public class Parser {
             {
                 TreeNode treeNode = new TreeNode(TreeNode.OPERATOR);
                 treeNode.setTokenType(tokenType);
+                treeNode.setValue("!");
                 return treeNode;
             }
         }
