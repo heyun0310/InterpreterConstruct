@@ -1,7 +1,9 @@
 package com.cmm.parser;
 
 import com.cmm.lexer.Token;
+import com.sun.org.apache.regexp.internal.RE;
 import org.omg.CORBA.PUBLIC_MEMBER;
+import sun.awt.geom.AreaOp;
 import sun.reflect.generics.tree.Tree;
 
 import java.util.LinkedList;
@@ -39,13 +41,37 @@ public class TreeNode {
 
     public static final int RETURN_STATEMENT = 15;
 
+    public static final int INT = 16;
+    public static final int REAL = 17;
+    public static final int MUL = 18;
+    public static final int EQ = 19;
+    public static final int GetAddress = 20;
+    public static final int LBRACK = 21;
+    public static final int RBRACK = 22;
+    public static final int LBRACE = 23;
+    public static final int RBRACE = 24;
+    public static final int ARRAY_LITERAL = 25;
+    public static final int COMMA = 26;
+    public static final int LPAREN = 27;
+    public static final int RPAREN = 28;
+    public static final int STATEMENT_LIST = 29;
+    public static final int SEMICOLON = 30;
+    public static final int READ = 31;
+    public static final int WRITE = 32;
+    public static final int WHILE = 33;
+    public static final int BREAK = 34;
+    public static final int IF = 35;
+    public static final int ELSE = 36;
+    public static final int RETURN = 37;
+    public static final int ADD = 38;
+    public static final int SUB = 39;
+    public static final int DIV = 40;
+
     private int nodeType;
     private int tokenType;
     private String value;
-    private TreeNode next;
-    private TreeNode leftNode;
-    private TreeNode middleNode;
-    private TreeNode rightNode;
+    //用于储存指向孩子节点的指针的数组
+    private LinkedList<TreeNode> childrenList = new LinkedList<TreeNode>();
 
     //用于二维数组
     //private LinkedList<TreeNode> arrayElementsLine0 = new LinkedList<TreeNode>();
@@ -53,9 +79,7 @@ public class TreeNode {
 
     private LinkedList<TreeNode> oneDimArray = new LinkedList<TreeNode>();
 
-    private LinkedList<LinkedList> twoDimArray = new LinkedList<LinkedList>();
-
-    private LinkedList<TreeNode> twoDimArray_ = new LinkedList<TreeNode>();
+    private LinkedList<TreeNode> twoDimArray = new LinkedList<TreeNode>();
 
     //?????
 //    public void setArrayElement(int line, TreeNode arrayElement)
@@ -78,7 +102,7 @@ public class TreeNode {
 
     public void setChildArray(TreeNode childArray)
     {
-        this.twoDimArray_.add(childArray);
+        this.twoDimArray.add(childArray);
     }
 
     public TreeNode(int _nodeType)
@@ -93,6 +117,95 @@ public class TreeNode {
                 break;
             default:
                 break;
+        }
+    }
+
+    private String printNode(int nodeType)
+    {
+        switch (nodeType)
+        {
+            case NULL:
+                return "|——— Program:";
+            case DECLARE_STATEMENT:
+                return "|——— Declare Statement:";
+            case BLOCK_STATEMENT:
+                return "|——— Block Statement:";
+            case ASSIGN_STATEMENT:
+                return "|——— Assign Statement:";
+            case READ_STATEMENT:
+                return "|——— Read Statement:";
+            case WRITE_STATEMENT:
+                return "|——— Write Statement:";
+            case EXPRESSION:
+                return "|——— Expression";
+            case WHILE_STATEMENT:
+                return "|——— While Statement:";
+            case BREAK_STATEMENT:
+                return "|——— Break Statement:";
+            case IF_STATEMENT:
+                return "|——— If Statement:";
+            case VARIABLE:
+                return "|——— Variable:";
+            case LITERAL:
+                return "|——— Literal:";
+            case FACTOR:
+                return "|——— Factor:";
+            case ARRAY_INITIALIZER:
+                return "|——— Array Initializer:";
+            case RETURN_STATEMENT:
+                return "|——— Return Statement:";
+            case INT:
+                return "|——— INT";
+            case REAL:
+                return "|——— REAL";
+            case MUL:
+                return "|——— *";
+            case EQ:
+                return "|——— =";
+            case GetAddress:
+                return "|——— &";
+            case LBRACE:
+                return "|——— {";
+            case RBRACE:
+                return "|——— }";
+            case LBRACK:
+                return "|——— [";
+            case RBRACK:
+                return "|——— ]";
+            case ARRAY_LITERAL:
+                return "|——— Array Literal:";
+            case COMMA:
+                return "|——— ,";
+            case LPAREN:
+                return "|——— (";
+            case RPAREN:
+                return "|——— )";
+            case STATEMENT_LIST:
+                return "Statement List";
+            case SEMICOLON:
+                return "|——— ;";
+            case READ:
+                return "|——— READ";
+            case WRITE:
+                return "|——— WRITE";
+            case WHILE:
+                return "|——— WHILE";
+            case BREAK:
+                return "|——— BREAK";
+            case IF:
+                return "|——— IF";
+            case ELSE:
+                return "|——— ELSE";
+            case RETURN:
+                return "|——— RETURN";
+            case ADD:
+                return "|——— +";
+            case SUB:
+                return "|——— -";
+            case DIV:
+                return "|——— /";
+            default:
+                    return "";
         }
     }
 
@@ -121,36 +234,9 @@ public class TreeNode {
         this.value = value;
     }
 
-    public TreeNode getNext() {
-        return next;
-    }
-
-    public void setNext(TreeNode next) {
-        this.next = next;
-    }
-
-    public TreeNode getLeftNode() {
-        return leftNode;
-    }
-
-    public void setLeftNode(TreeNode leftNode) {
-        this.leftNode = leftNode;
-    }
-
-    public TreeNode getMiddleNode() {
-        return middleNode;
-    }
-
-    public void setMiddleNode(TreeNode middleNode) {
-        this.middleNode = middleNode;
-    }
-
-    public TreeNode getRightNode() {
-        return rightNode;
-    }
-
-    public void setRightNode(TreeNode rightNode) {
-        this.rightNode = rightNode;
+    public void setChildNode(TreeNode childNode)
+    {
+        this.childrenList.add(childNode);
     }
 
 
