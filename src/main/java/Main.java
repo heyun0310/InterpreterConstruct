@@ -62,6 +62,10 @@ public class Main {
         String string = scanner.nextLine();
         System.out.print(string);
         char[] chars = string.toCharArray();
+        if (chars == null || chars.length < 1) {
+            chars = new char[1];
+            chars[0] = '2';
+        }
         char c = chars[0];
         TreeNode rootNode = new TreeNode(TreeNode.NULL);
 

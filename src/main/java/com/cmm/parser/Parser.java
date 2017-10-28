@@ -2,6 +2,7 @@ package com.cmm.parser;
 
 import com.cmm.lexer.Token;
 import com.sun.corba.se.impl.oa.toa.TOA;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import sun.reflect.generics.tree.Tree;
 
 import javax.transaction.TransactionRequiredException;
@@ -838,15 +839,15 @@ public class Parser {
 //        for (int i = 0;i < spaceNum; i++)
 //            System.out.print("     ");
         TreeNode leftChild = term();
+        treeNode.setChildNode(leftChild);
         if (checkNextTokenType(Token.ADD))
         {
             spaceNum = curSpaceNum;
-            TreeNode addNode = new TreeNode(TreeNode.ADD);
-            treeNode.setChildNode(addNode);
+//            TreeNode addNode = new TreeNode(TreeNode.ADD);
+//            treeNode.setChildNode(addNode);
 //            for (int i = 0;i < spaceNum; i++)
 //                System.out.print("     ");
 //            System.out.println("|——— +");
-            treeNode.setChildNode(leftChild);
             treeNode.setChildNode(addibleOperator());
 //            for (int i = 0;i < spaceNum; i++)
 //                System.out.print("     ");
@@ -854,17 +855,18 @@ public class Parser {
         }else if (checkNextTokenType(Token.SUB))    //?????
         {
             spaceNum = curSpaceNum;
-            TreeNode subNode = new TreeNode(TreeNode.SUB);
-            treeNode.setChildNode(subNode);
+//            TreeNode subNode = new TreeNode(TreeNode.SUB);
+//            treeNode.setChildNode(subNode);
 //            for (int i = 0;i < spaceNum; i++)
 //                System.out.print("     ");
 //            System.out.println("|——— -");
-            treeNode.setChildNode(leftChild);
-            TreeNode subOperatorNode = new TreeNode(TreeNode.OPERATOR);
-            subOperatorNode.setTokenType(Token.ADD);
-            treeNode.setChildNode(subOperatorNode);
+//            treeNode.setChildNode(leftChild);
+//            TreeNode subOperatorNode = new TreeNode(TreeNode.OPERATOR);
+//            subOperatorNode.setTokenType(Token.ADD);
+//            treeNode.setChildNode(subOperatorNode);
 //            for (int i = 0;i < spaceNum; i++)
 //                System.out.print("     ");
+            treeNode.setChildNode(addibleOperator());
             treeNode.setChildNode(addibleExpression());
         }else{
             return leftChild;
@@ -881,24 +883,24 @@ public class Parser {
 //        for (int i = 0;i < spaceNum; i++)
 //            System.out.print("     ");
         TreeNode leftChild = notExpression();
+        treeNode.setChildNode(leftChild);
         if (checkNextTokenType(Token.MUL, Token.DIV))
         {
 //            for (int i = 0;i < spaceNum; i++)
 //                System.out.print("     ");
             if (checkNextTokenType(Token.MUL))
             {
-                TreeNode mulNode = new TreeNode(TreeNode.MUL);
-                treeNode.setChildNode(mulNode);
+//                TreeNode mulNode = new TreeNode(TreeNode.MUL);
+//                treeNode.setChildNode(mulNode);
 //                System.out.println("|——— *");
-                treeNode.setChildNode(leftChild);
                 treeNode.setChildNode(multiplyOperator());
             }
             else if (checkNextTokenType(Token.DIV))
             {
-                TreeNode divNode = new TreeNode(TreeNode.DIV);
-                treeNode.setChildNode(divNode);
+//                TreeNode divNode = new TreeNode(TreeNode.DIV);
+//                treeNode.setChildNode(divNode);
 //                System.out.println("|——— /");
-                treeNode.setChildNode(leftChild);
+//                treeNode.setChildNode(leftChild);
                 treeNode.setChildNode(multiplyOperator());
             }
 //            for (int i = 0;i < spaceNum; i++)
@@ -1021,9 +1023,17 @@ public class Parser {
             int tokenType = currentToken.getType();
             if (tokenType == Token.MUL || tokenType == Token.DIV)
             {
-                TreeNode treeNode = new TreeNode(TreeNode.OPERATOR);
-                treeNode.setTokenType(tokenType);
-                return treeNode;
+                if (tokenType == Token.MUL)
+                {
+                    TreeNode mulNode = new TreeNode(TreeNode.MUL);
+                    return mulNode;
+                } else
+                {
+                    TreeNode divNode = new TreeNode(TreeNode.DIV);
+                    return divNode;
+                }
+//                TreeNode treeNode = new TreeNode(TreeNode.OPERATOR);
+//                treeNode.setTokenType(tokenType);
             }
         }
         throw new Exception("line " + getNextTokenLineNo() + " : next token should be multiple operator");
@@ -1037,7 +1047,7 @@ public class Parser {
             int tokenType = currentToken.getType();
             if (tokenType == Token.BANG)
             {
-                TreeNode treeNode = new TreeNode(TreeNode.OPERATOR);
+                TreeNode treeNode = new TreeNode(TreeNode.BANG);
                 treeNode.setTokenType(tokenType);
                 treeNode.setValue("!");
                 return treeNode;
@@ -1075,9 +1085,19 @@ public class Parser {
             int tokenType = currentToken.getType();
             if (tokenType == Token.ADD || tokenType == Token.SUB)
             {
-                TreeNode treeNode = new TreeNode(TreeNode.OPERATOR);
-                treeNode.setTokenType(tokenType);
-                return treeNode;
+                if (tokenType == Token.ADD)
+                {
+                    TreeNode addNode = new TreeNode(TreeNode.ADD);
+                    addNode.setTokenType(tokenType);
+                    return addNode;
+                }else {
+                    TreeNode subNode = new TreeNode(TreeNode.SUB);
+                    subNode.setTokenType(tokenType);
+                    return subNode;
+                }
+//                TreeNode treeNode = new TreeNode(TreeNode.OPERATOR);
+//                treeNode.setTokenType(tokenType);
+//                return treeNode;
             }
         }
         throw new Exception("line " + getNextTokenLineNo() + " : next token should be addible operator.");

@@ -72,6 +72,7 @@ public class TreeNode {
     public static final int AddibleExpression = 44;
     public static final int TERM = 45;
     public static final int NotExpression = 46;
+    public static final int BANG = 47;
 
     private int nodeType;
     private int tokenType;
