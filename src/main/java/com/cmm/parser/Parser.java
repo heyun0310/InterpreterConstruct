@@ -22,11 +22,11 @@ public class Parser {
         rootNode = new TreeNode(TreeNode.NULL);
         iterator = tokenLinkedList.listIterator();
 
-        System.out.println("Programme:");
+        //System.out.println("Programme:");
         while (iterator.hasNext())
         {
             spaceNum = 1;
-            System.out.print("     ");
+            //System.out.print("     ");
             //treeNodeLinkedList.add(parseStatement());
             rootNode.setChildNode(parseStatement());
         }
@@ -64,7 +64,7 @@ public class Parser {
     private static TreeNode parseDeclareStatement() throws Exception {
         spaceNum++;
         int curSpaceNum = spaceNum;
-        System.out.println("|———Declare Statement:");
+        //System.out.println("|———Declare Statement:");
         TreeNode treeNode = new TreeNode(TreeNode.DECLARE_STATEMENT);
         TreeNode variableNode = new TreeNode(TreeNode.VARIABLE);
         //LinkedList<TreeNode> variableNodes = new LinkedList<TreeNode>();
@@ -76,16 +76,16 @@ public class Parser {
             if (tokenType == Token.INT) {
                 TreeNode keyNode = new TreeNode(TreeNode.INT);
                 treeNode.setChildNode(keyNode);
-                for (int i = 0; i < spaceNum; i++)
-                    System.out.print("     ");
-                System.out.println("|———INT");
+//                for (int i = 0; i < spaceNum; i++)
+//                    System.out.print("     ");
+//                System.out.println("|———INT");
                 variableNode.setTokenType(Token.INT);
             } else {
                 TreeNode keyNode = new TreeNode(TreeNode.REAL);
                 treeNode.setChildNode(keyNode);
-                for (int i = 0; i < spaceNum; i++)
-                    System.out.print("     ");
-                System.out.println("|———REAL");
+//                for (int i = 0; i < spaceNum; i++)
+//                    System.out.print("     ");
+//                System.out.println("|———REAL");
                 variableNode.setTokenType(Token.REAL);
             }
         } else {
@@ -96,19 +96,20 @@ public class Parser {
             currentToken = iterator.next();
             TreeNode operatorNode = new TreeNode(TreeNode.MUL);
             treeNode.setChildNode(operatorNode);
-            for (int i = 0; i < spaceNum; i++)
-                System.out.print("     ");
-            System.out.println("|——— *");
+//            for (int i = 0; i < spaceNum; i++)
+//                System.out.print("     ");
+//            System.out.println("|——— *");
         }
 
         //声明语句中的自定义标识符
         if (checkNextTokenType(Token.ID)) {
+            treeNode.setChildNode(variableNode);
             currentToken = iterator.next();
             variableNode.setValue(currentToken.getValue());
-            for (int i = 0; i < spaceNum; i++)
-                System.out.print("     ");
-            System.out.println("|———ID:" + currentToken.getValue());
-            treeNode.setChildNode(variableNode);
+//            for (int i = 0; i < spaceNum; i++)
+//                System.out.print("     ");
+//            System.out.println("|———ID:" + currentToken.getValue());
+//            treeNode.setChildNode(variableNode);
         } else {
             throw new Exception("Line" + getNextTokenLineNo() + " expects token ID.");
         }
@@ -118,35 +119,35 @@ public class Parser {
         if (checkNextTokenType(Token.EQ)) {
             TreeNode keyNode = new TreeNode(TreeNode.EQ);
             treeNode.setChildNode(keyNode);
-            for (int i = 0; i < spaceNum; i++)
-                System.out.print("     ");
-            System.out.println("|——— =");
+//            for (int i = 0; i < spaceNum; i++)
+//                System.out.print("     ");
+//            System.out.println("|——— =");
             skipNextToken(Token.EQ);
 
             if (checkNextTokenType(Token.GetAddress)) {
                 //spaceNum = curSpace;
                 TreeNode operatorNode = new TreeNode(TreeNode.GetAddress);
                 treeNode.setChildNode(operatorNode);
-                for (int i = 0; i < spaceNum; i++)
-                    System.out.print("     ");
-                System.out.println("|——— &");
+//                for (int i = 0; i < spaceNum; i++)
+//                    System.out.print("     ");
+//                System.out.println("|——— &");
                 skipNextToken(Token.GetAddress);
-                for (int i = 0; i < spaceNum; i++)
-                    System.out.print("     ");
+//                for (int i = 0; i < spaceNum; i++)
+//                    System.out.print("     ");
                 treeNode.setChildNode(variableName());
             } else if (checkNextTokenType(Token.MUL)) {
                 TreeNode operatorNode = new TreeNode(TreeNode.MUL);
                 treeNode.setChildNode(operatorNode);
-                for (int i = 0; i < spaceNum; i++)
-                    System.out.print("     ");
-                System.out.println("|——— *");
+//                for (int i = 0; i < spaceNum; i++)
+//                    System.out.print("     ");
+//                System.out.println("|——— *");
                 skipNextToken(Token.MUL);
-                for (int i = 0; i < spaceNum; i++)
-                    System.out.print("     ");
+//                for (int i = 0; i < spaceNum; i++)
+//                    System.out.print("     ");
                 treeNode.setChildNode(variableName());
             } else {
-                for (int i = 0; i < spaceNum; i++)
-                    System.out.print("     ");
+//                for (int i = 0; i < spaceNum; i++)
+//                    System.out.print("     ");
                 treeNode.setChildNode(parseExpression());
             }
         } else if (getNextTokenType() == Token.LBRACK)
@@ -155,37 +156,37 @@ public class Parser {
             int curPos = spaceNum;
             TreeNode operatorNode = new TreeNode(TreeNode.LBRACK);
             treeNode.setChildNode(operatorNode);
-            for (int i = 0; i < spaceNum; i++)
-                System.out.print("     ");
-            System.out.println("|——— [");
+//            for (int i = 0; i < spaceNum; i++)
+//                System.out.print("     ");
+//            System.out.println("|——— [");
             skipNextToken(Token.LBRACK);
-            for (int i = 0; i < spaceNum; i++)
-                System.out.print("     ");
+//            for (int i = 0; i < spaceNum; i++)
+//                System.out.print("     ");
             treeNode.setChildNode(parseExpression());
             spaceNum = curPos;
             TreeNode operatorNode2 = new TreeNode(TreeNode.RBRACK);
             treeNode.setChildNode(operatorNode2);
-            for (int i = 0; i < spaceNum; i++)
-                System.out.print("     ");
-            System.out.println("|——— ]");
+//            for (int i = 0; i < spaceNum; i++)
+//                System.out.print("     ");
+//            System.out.println("|——— ]");
             skipNextToken(Token.RBRACK);
             if (checkNextTokenType(Token.LBRACK)) {
                 int curPos_ = spaceNum;
                 TreeNode operatorNode_1 = new TreeNode(TreeNode.LBRACK);
                 treeNode.setChildNode(operatorNode_1);
-                for (int i = 0; i < spaceNum; i++)
-                    System.out.print("     ");
-                System.out.println("|——— [");
+//                for (int i = 0; i < spaceNum; i++)
+//                    System.out.print("     ");
+//                System.out.println("|——— [");
                 skipNextToken(Token.LBRACK);
-                for (int i = 0; i < spaceNum; i++)
-                    System.out.print("     ");
+//                for (int i = 0; i < spaceNum; i++)
+//                    System.out.print("     ");
                 treeNode.setChildNode(parseExpression());
                 spaceNum = curPos_;
                 TreeNode operatorNode_2 = new TreeNode(TreeNode.LBRACK);
                 treeNode.setChildNode(operatorNode_2);
-                for (int i = 0; i < spaceNum; i++)
-                    System.out.print("     ");
-                System.out.println("|——— ]");
+//                for (int i = 0; i < spaceNum; i++)
+//                    System.out.print("     ");
+//                System.out.println("|——— ]");
                 skipNextToken(Token.RBRACK);
             }
 
@@ -198,38 +199,38 @@ public class Parser {
                 TreeNode arrayLiteral = new TreeNode(TreeNode.ARRAY_LITERAL);
                 arrayInitializer.setChildNode(arrayLiteral);
                 arrayInitializer.setChildNode(eqNode);
-                for (int i = 0; i < spaceNum; i++)
-                    System.out.print("     ");
-                System.out.println("|——— =");
+//                for (int i = 0; i < spaceNum; i++)
+//                    System.out.print("     ");
+//                System.out.println("|——— =");
                 skipNextToken(Token.EQ);
                 if (checkNextTokenType(Token.LBRACE)) {
-                    for (int i = 0; i < spaceNum; i++)
-                        System.out.print("     ");
-                    System.out.println("|———Array:");
+//                    for (int i = 0; i < spaceNum; i++)
+//                        System.out.print("     ");
+//                    System.out.println("|———Array:");
                     spaceNum++;
                     int curSpace = spaceNum;
                     TreeNode lbraceNode = new TreeNode(TreeNode.LBRACE);
                     arrayLiteral.setChildNode(lbraceNode);
-                    for (int i = 0; i < spaceNum; i++)
-                        System.out.print("     ");
-                    System.out.println("|——— {");
+//                    for (int i = 0; i < spaceNum; i++)
+//                        System.out.print("     ");
+//                    System.out.println("|——— {");
                     skipNextToken(Token.LBRACE);
                     while (checkNextTokenType(Token.LBRACE)) {
                         TreeNode childArrayLiteral = new TreeNode(TreeNode.ARRAY_LITERAL);
                         arrayLiteral.setChildNode(childArrayLiteral);
                         spaceNum = curSpace;
-                        for (int i = 0; i < spaceNum; i++)
-                            System.out.print("     ");
-                        System.out.println("|———Array:");
+//                        for (int i = 0; i < spaceNum; i++)
+//                            System.out.print("     ");
+//                        System.out.println("|———Array:");
                         spaceNum++;
                         TreeNode lbraceNode_ = new TreeNode(TreeNode.LBRACE);
                         childArrayLiteral.setChildNode(lbraceNode_);
-                        for (int i = 0; i < spaceNum; i++)
-                            System.out.print("     ");
-                        System.out.println("|——— {");
+//                        for (int i = 0; i < spaceNum; i++)
+//                            System.out.print("     ");
+//                        System.out.println("|——— {");
                         skipNextToken(Token.LBRACE);
-                        for (int i = 0; i < spaceNum; i++)
-                            System.out.print("     ");
+//                        for (int i = 0; i < spaceNum; i++)
+//                            System.out.print("     ");
                         int curSpace_ = spaceNum;
                         childArrayLiteral.setChildNode(parseExpression());
                         //variableNode.setArrayElement(arrayLineNo, parseExpression());
@@ -237,25 +238,25 @@ public class Parser {
                             TreeNode commaNode = new TreeNode(TreeNode.COMMA);
                             childArrayLiteral.setChildNode(commaNode);
                             spaceNum = curSpace_;
-                            for (int i = 0; i < spaceNum; i++)
-                                System.out.print("     ");
-                            System.out.println("|——— ,");
+//                            for (int i = 0; i < spaceNum; i++)
+//                                System.out.print("     ");
+//                            System.out.println("|——— ,");
                             skipNextToken(Token.COMMA);
-                            for (int i = 0; i < spaceNum; i++)
-                                System.out.print("     ");
+//                            for (int i = 0; i < spaceNum; i++)
+//                                System.out.print("     ");
                             childArrayLiteral.setChildNode(parseExpression());
                         }
                         TreeNode rbraceNode = new TreeNode(TreeNode.RBRACE);
                         childArrayLiteral.setChildNode(rbraceNode);
-                        for (int i = 0; i < spaceNum; i++)
-                            System.out.print("     ");
-                        System.out.println("|——— }");
+//                        for (int i = 0; i < spaceNum; i++)
+//                            System.out.print("     ");
+//                        System.out.println("|——— }");
                         skipNextToken(Token.RBRACE);
                         TreeNode commaNode = new TreeNode(TreeNode.COMMA);
                         arrayLiteral.setChildNode(commaNode);
-                        for (int i = 0; i < spaceNum; i++)
-                            System.out.print("     ");
-                        System.out.println("|——— ,");
+//                        for (int i = 0; i < spaceNum; i++)
+//                            System.out.print("     ");
+//                        System.out.println("|——— ,");
                         skipNextToken(Token.COMMA);
                         //arrayLineNo++;
                     }
@@ -267,28 +268,30 @@ public class Parser {
         else if (getNextTokenType() == Token.LPAREN) {
             TreeNode lparenNode = new TreeNode(TreeNode.LPAREN);
             treeNode.setChildNode(lparenNode);
-            for (int i = 0; i < spaceNum; i++)
-                System.out.print("     ");
-            System.out.println("|——— (");
+//            for (int i = 0; i < spaceNum; i++)
+//                System.out.print("     ");
+//            System.out.println("|——— (");
             skipNextToken(Token.LPAREN);
             if (getNextTokenType() == Token.RPAREN) {
                 TreeNode rparenNode = new TreeNode(TreeNode.RPAREN);
                 treeNode.setChildNode(rparenNode);
-                for (int i = 0; i < spaceNum; i++)
-                    System.out.print("     ");
-                System.out.println("|——— )");
+//                for (int i = 0; i < spaceNum; i++)
+//                    System.out.print("     ");
+//                System.out.println("|——— )");
                 skipNextToken(Token.RPAREN);
             } else {
                 System.out.println("Line" + getNextTokenLineNo() + "function declarement expects token ).");
             }
             //用于处理函数体，即BlockStatement
-            for (int i = 0; i < spaceNum; i++)
-                System.out.print("     ");
-            treeNode.setChildNode(parseStatement());
+//            for (int i = 0; i < spaceNum; i++)
+//                System.out.print("     ");
+//            treeNode.setChildNode(parseStatement());
         }
 
         while (checkNextTokenType(Token.COMMA)) {
             spaceNum = curSpaceNum;
+            TreeNode commaNode = new TreeNode(TreeNode.COMMA);
+            treeNode.setChildNode(commaNode);
             TreeNode theOtherVariableNode = new TreeNode(TreeNode.VARIABLE);
             theOtherVariableNode.setTokenType(variableNode.getTokenType());
             currentToken = iterator.next();
@@ -299,12 +302,12 @@ public class Parser {
         if (getNextTokenType() == Token.SEMICOLON) {
             TreeNode semiNode = new TreeNode(TreeNode.SEMICOLON);
             treeNode.setChildNode(semiNode);
-            for (int i = 0; i < spaceNum; i++)
-                System.out.print("     ");
-            System.out.println("|——— ;");
+//            for (int i = 0; i < spaceNum; i++)
+//                System.out.print("     ");
+//            System.out.println("|——— ;");
             skipNextToken(Token.SEMICOLON);
         }
-        treeNode.setChildNode(variableNode);
+        //treeNode.setChildNode(variableNode);
         return treeNode;
     }
 
@@ -314,18 +317,18 @@ public class Parser {
             currentToken = iterator.next();
             TreeNode operatorNode = new TreeNode(TreeNode.MUL);
             parentNode.setChildNode(operatorNode);
-            for (int i = 0; i < spaceNum; i++)
-                System.out.print("     ");
-            System.out.println("|——— *");
+//            for (int i = 0; i < spaceNum; i++)
+//                System.out.print("     ");
+//            System.out.println("|——— *");
         }
 
         //声明语句中的自定义标识符
         if (checkNextTokenType(Token.ID)) {
             currentToken = iterator.next();
             theOtherVariableNode.setValue(currentToken.getValue());
-            for (int i = 0; i < spaceNum; i++)
-                System.out.print("     ");
-            System.out.println("|———ID:" + currentToken.getValue());
+//            for (int i = 0; i < spaceNum; i++)
+//                System.out.print("     ");
+//            System.out.println("|———ID:" + currentToken.getValue());
             parentNode.setChildNode(theOtherVariableNode);
         } else {
             throw new Exception("Line" + getNextTokenLineNo() + " expects token ID.");
@@ -337,35 +340,35 @@ public class Parser {
         {
             TreeNode keyNode = new TreeNode(TreeNode.EQ);
             parentNode.setChildNode(keyNode);
-            for (int i = 0; i < spaceNum; i++)
-                System.out.print("     ");
-            System.out.println("|——— =");
+//            for (int i = 0; i < spaceNum; i++)
+//                System.out.print("     ");
+//            System.out.println("|——— =");
             skipNextToken(Token.EQ);
 
             if (checkNextTokenType(Token.GetAddress)) {
                 //spaceNum = curSpace;
                 TreeNode operatorNode = new TreeNode(TreeNode.GetAddress);
                 parentNode.setChildNode(operatorNode);
-                for (int i = 0; i < spaceNum; i++)
-                    System.out.print("     ");
-                System.out.println("|——— &");
+//                for (int i = 0; i < spaceNum; i++)
+//                    System.out.print("     ");
+//                System.out.println("|——— &");
                 skipNextToken(Token.GetAddress);
-                for (int i = 0; i < spaceNum; i++)
-                    System.out.print("     ");
+//                for (int i = 0; i < spaceNum; i++)
+//                    System.out.print("     ");
                 parentNode.setChildNode(variableName());
             } else if (checkNextTokenType(Token.MUL)) {
                 TreeNode operatorNode = new TreeNode(TreeNode.MUL);
                 parentNode.setChildNode(operatorNode);
-                for (int i = 0; i < spaceNum; i++)
-                    System.out.print("     ");
-                System.out.println("|——— *");
+//                for (int i = 0; i < spaceNum; i++)
+//                    System.out.print("     ");
+//                System.out.println("|——— *");
                 skipNextToken(Token.MUL);
-                for (int i = 0; i < spaceNum; i++)
-                    System.out.print("     ");
+//                for (int i = 0; i < spaceNum; i++)
+//                    System.out.print("     ");
                 parentNode.setChildNode(variableName());
             } else {
-                for (int i = 0; i < spaceNum; i++)
-                    System.out.print("     ");
+//                for (int i = 0; i < spaceNum; i++)
+//                    System.out.print("     ");
                 parentNode.setChildNode(parseExpression());
             }
         } else if (getNextTokenType() == Token.LBRACK) {
@@ -373,37 +376,37 @@ public class Parser {
             int curPos = spaceNum;
             TreeNode operatorNode = new TreeNode(TreeNode.LBRACK);
             parentNode.setChildNode(operatorNode);
-            for (int i = 0; i < spaceNum; i++)
-                System.out.print("     ");
-            System.out.println("|——— [");
+//            for (int i = 0; i < spaceNum; i++)
+//                System.out.print("     ");
+//            System.out.println("|——— [");
             skipNextToken(Token.LBRACK);
-            for (int i = 0; i < spaceNum; i++)
-                System.out.print("     ");
+//            for (int i = 0; i < spaceNum; i++)
+//                System.out.print("     ");
             parentNode.setChildNode(parseExpression());
             spaceNum = curPos;
             TreeNode operatorNode2 = new TreeNode(TreeNode.RBRACK);
             parentNode.setChildNode(operatorNode2);
-            for (int i = 0; i < spaceNum; i++)
-                System.out.print("     ");
-            System.out.println("|——— ]");
+//            for (int i = 0; i < spaceNum; i++)
+//                System.out.print("     ");
+//            System.out.println("|——— ]");
             skipNextToken(Token.RBRACK);
             if (checkNextTokenType(Token.LBRACK)) {
                 int curPos_ = spaceNum;
                 TreeNode operatorNode_1 = new TreeNode(TreeNode.LBRACK);
                 parentNode.setChildNode(operatorNode_1);
-                for (int i = 0; i < spaceNum; i++)
-                    System.out.print("     ");
-                System.out.println("|——— [");
+//                for (int i = 0; i < spaceNum; i++)
+//                    System.out.print("     ");
+//                System.out.println("|——— [");
                 skipNextToken(Token.LBRACK);
-                for (int i = 0; i < spaceNum; i++)
-                    System.out.print("     ");
+//                for (int i = 0; i < spaceNum; i++)
+//                    System.out.print("     ");
                 parentNode.setChildNode(parseExpression());
                 spaceNum = curPos_;
                 TreeNode operatorNode_2 = new TreeNode(TreeNode.LBRACK);
                 parentNode.setChildNode(operatorNode_2);
-                for (int i = 0; i < spaceNum; i++)
-                    System.out.print("     ");
-                System.out.println("|——— ]");
+//                for (int i = 0; i < spaceNum; i++)
+//                    System.out.print("     ");
+//                System.out.println("|——— ]");
                 skipNextToken(Token.RBRACK);
             }
             if (checkNextTokenType(Token.EQ)) {
@@ -413,38 +416,38 @@ public class Parser {
                 TreeNode arrayLiteral = new TreeNode(TreeNode.ARRAY_LITERAL);
                 arrayInitializer.setChildNode(arrayLiteral);
                 arrayInitializer.setChildNode(eqNode);
-                for (int i = 0; i < spaceNum; i++)
-                    System.out.print("     ");
-                System.out.println("|——— =");
+//                for (int i = 0; i < spaceNum; i++)
+//                    System.out.print("     ");
+//                System.out.println("|——— =");
                 skipNextToken(Token.EQ);
                 if (checkNextTokenType(Token.LBRACE)) {
-                    for (int i = 0; i < spaceNum; i++)
-                        System.out.print("     ");
-                    System.out.println("|———Array:");
+//                    for (int i = 0; i < spaceNum; i++)
+//                        System.out.print("     ");
+//                    System.out.println("|———Array:");
                     spaceNum++;
                     int curSpace = spaceNum;
                     TreeNode lbraceNode = new TreeNode(TreeNode.LBRACE);
                     arrayLiteral.setChildNode(lbraceNode);
-                    for (int i = 0; i < spaceNum; i++)
-                        System.out.print("     ");
-                    System.out.println("|——— {");
+//                    for (int i = 0; i < spaceNum; i++)
+//                        System.out.print("     ");
+//                    System.out.println("|——— {");
                     skipNextToken(Token.LBRACE);
                     while (checkNextTokenType(Token.LBRACE)) {
                         TreeNode childArrayLiteral = new TreeNode(TreeNode.ARRAY_LITERAL);
                         arrayLiteral.setChildNode(childArrayLiteral);
                         spaceNum = curSpace;
-                        for (int i = 0; i < spaceNum; i++)
-                            System.out.print("     ");
-                        System.out.println("|———Array:");
+//                        for (int i = 0; i < spaceNum; i++)
+//                            System.out.print("     ");
+//                        System.out.println("|———Array:");
                         spaceNum++;
                         TreeNode lbraceNode_ = new TreeNode(TreeNode.LBRACE);
                         childArrayLiteral.setChildNode(lbraceNode_);
-                        for (int i = 0; i < spaceNum; i++)
-                            System.out.print("     ");
-                        System.out.println("|——— {");
+//                        for (int i = 0; i < spaceNum; i++)
+//                            System.out.print("     ");
+//                        System.out.println("|——— {");
                         skipNextToken(Token.LBRACE);
-                        for (int i = 0; i < spaceNum; i++)
-                            System.out.print("     ");
+//                        for (int i = 0; i < spaceNum; i++)
+//                            System.out.print("     ");
                         int curSpace_ = spaceNum;
                         childArrayLiteral.setChildNode(parseExpression());
                         //variableNode.setArrayElement(arrayLineNo, parseExpression());
@@ -452,25 +455,25 @@ public class Parser {
                             TreeNode commaNode = new TreeNode(TreeNode.COMMA);
                             childArrayLiteral.setChildNode(commaNode);
                             spaceNum = curSpace_;
-                            for (int i = 0; i < spaceNum; i++)
-                                System.out.print("     ");
-                            System.out.println("|——— ,");
+//                            for (int i = 0; i < spaceNum; i++)
+//                                System.out.print("     ");
+//                            System.out.println("|——— ,");
                             skipNextToken(Token.COMMA);
-                            for (int i = 0; i < spaceNum; i++)
-                                System.out.print("     ");
+//                            for (int i = 0; i < spaceNum; i++)
+//                                System.out.print("     ");
                             childArrayLiteral.setChildNode(parseExpression());
                         }
                         TreeNode rbraceNode = new TreeNode(TreeNode.RBRACE);
                         childArrayLiteral.setChildNode(rbraceNode);
-                        for (int i = 0; i < spaceNum; i++)
-                            System.out.print("     ");
-                        System.out.println("|——— }");
+//                        for (int i = 0; i < spaceNum; i++)
+//                            System.out.print("     ");
+//                        System.out.println("|——— }");
                         skipNextToken(Token.RBRACE);
                         TreeNode commaNode = new TreeNode(TreeNode.COMMA);
                         arrayLiteral.setChildNode(commaNode);
-                        for (int i = 0; i < spaceNum; i++)
-                            System.out.print("     ");
-                        System.out.println("|——— ,");
+//                        for (int i = 0; i < spaceNum; i++)
+//                            System.out.print("     ");
+//                        System.out.println("|——— ,");
                         skipNextToken(Token.COMMA);
                         //arrayLineNo++;
                     }
@@ -484,7 +487,7 @@ public class Parser {
     {
         spaceNum++;
         int curSpace = spaceNum;
-        System.out.println("|———Block Statement:");
+        //System.out.println("|———Block Statement:");
         TreeNode treeNode = new TreeNode(TreeNode.BLOCK_STATEMENT);
         TreeNode rootNode = treeNode;
         TreeNode statementNodeInBlock = null;
@@ -493,24 +496,24 @@ public class Parser {
         treeNode.setChildNode(lbraceNode);
         TreeNode statementListInBlock = new TreeNode(TreeNode.STATEMENT_LIST);
         treeNode.setChildNode(statementListInBlock);
-        for (int i = 0;i<spaceNum;i++)
-            System.out.print("     ");
-        System.out.println("|——— {");
+//        for (int i = 0;i<spaceNum;i++)
+//            System.out.print("     ");
+//        System.out.println("|——— {");
 
         while (getNextTokenType()!= Token.RBRACE)
         {
             spaceNum = curSpace;
-            for (int i = 0;i<spaceNum;i++)
-                System.out.print("     ");
+//            for (int i = 0;i<spaceNum;i++)
+//                System.out.print("     ");
             statementNodeInBlock = parseStatement();
             statementListInBlock.setChildNode(statementNodeInBlock);
         }
         spaceNum = curSpace;
         TreeNode rbraceNode = new TreeNode(TreeNode.RBRACE);
         treeNode.setChildNode(rbraceNode);
-        for (int i = 0;i<spaceNum;i++)
-            System.out.print("     ");
-        System.out.println("|——— }");
+//        for (int i = 0;i<spaceNum;i++)
+//            System.out.print("     ");
+//        System.out.println("|——— }");
         skipNextToken(Token.RBRACE);
         return rootNode;
     }
@@ -519,53 +522,53 @@ public class Parser {
     {
         spaceNum++;
         int curSpaceNum = spaceNum;
-        System.out.println("|———Assign Statement:");
+        //System.out.println("|———Assign Statement:");
         TreeNode treeNode = new TreeNode(TreeNode.ASSIGN_STATEMENT);
-        for (int i = 0; i < spaceNum;i++)
-            System.out.print("     ");
+//        for (int i = 0; i < spaceNum;i++)
+//            System.out.print("     ");
         treeNode.setChildNode(variableName());
         spaceNum = curSpaceNum;
         TreeNode eqNode = new TreeNode(TreeNode.EQ);
         treeNode.setChildNode(eqNode);
-        for (int i = 0; i < spaceNum;i++)
-            System.out.print("     ");
-        System.out.println("|——— =");
+//        for (int i = 0; i < spaceNum;i++)
+//            System.out.print("     ");
+//        System.out.println("|——— =");
         skipNextToken(Token.EQ);
 
         if (checkNextTokenType(Token.GetAddress))
         {
             TreeNode opNode = new TreeNode(TreeNode.GetAddress);
             treeNode.setChildNode(opNode);
-            for (int i = 0; i < spaceNum;i++)
-                System.out.print("     ");
-            System.out.println("|——— &");
+//            for (int i = 0; i < spaceNum;i++)
+//                System.out.print("     ");
+//            System.out.println("|——— &");
             skipNextToken(Token.GetAddress);
-            for (int i = 0; i < spaceNum;i++)
-                System.out.print("     ");
+//            for (int i = 0; i < spaceNum;i++)
+//                System.out.print("     ");
             treeNode.setChildNode(variableName());
         }else if (checkNextTokenType(Token.MUL))
         {
             TreeNode opNode = new TreeNode(TreeNode.MUL);
             treeNode.setChildNode(opNode);
-            for (int i = 0; i < spaceNum;i++)
-                System.out.print("     ");
-            System.out.println("|——— *");
+//            for (int i = 0; i < spaceNum;i++)
+//                System.out.print("     ");
+//            System.out.println("|——— *");
             skipNextToken(Token.MUL);
-            for (int i = 0; i < spaceNum;i++)
-                System.out.print("     ");
+//            for (int i = 0; i < spaceNum;i++)
+//                System.out.print("     ");
             treeNode.setChildNode(variableName());
         }else
         {
-            for (int i = 0; i < spaceNum;i++)
-                System.out.print("     ");
+//            for (int i = 0; i < spaceNum;i++)
+//                System.out.print("     ");
             treeNode.setChildNode(parseExpression());
         }
         spaceNum = curSpaceNum;
         TreeNode semiNode = new TreeNode(TreeNode.SEMICOLON);
         treeNode.setChildNode(semiNode);
-        for (int i = 0; i < spaceNum;i++)
-            System.out.print("     ");
-        System.out.println("|——— ;");
+//        for (int i = 0; i < spaceNum;i++)
+//            System.out.print("     ");
+//        System.out.println("|——— ;");
         skipNextToken(Token.SEMICOLON);
         return treeNode;
     }
@@ -574,23 +577,23 @@ public class Parser {
     {
         spaceNum++;
         int curSpace = spaceNum;
-        System.out.println("|———Read Statement:");
+//        System.out.println("|———Read Statement:");
         TreeNode treeNode = new TreeNode(TreeNode.READ_STATEMENT);
         skipNextToken(Token.READ);
         TreeNode readNode = new TreeNode(TreeNode.READ);
         treeNode.setChildNode(readNode);
-        for (int i = 0; i < spaceNum;i++)
-            System.out.print("     ");
-        System.out.println("|——— READ");
-        for (int i = 0; i < spaceNum;i++)
-            System.out.print("     ");
+//        for (int i = 0; i < spaceNum;i++)
+//            System.out.print("     ");
+//        System.out.println("|——— READ");
+//        for (int i = 0; i < spaceNum;i++)
+//            System.out.print("     ");
         treeNode.setChildNode(variableName());
         spaceNum = curSpace;
         TreeNode semiNode = new TreeNode(TreeNode.SEMICOLON);
         treeNode.setChildNode(semiNode);
-        for (int i = 0; i < spaceNum;i++)
-            System.out.print("     ");
-        System.out.println("|——— ;");
+//        for (int i = 0; i < spaceNum;i++)
+//            System.out.print("     ");
+//        System.out.println("|——— ;");
         skipNextToken(Token.SEMICOLON);
         return treeNode;
     }
@@ -599,23 +602,23 @@ public class Parser {
     {
         spaceNum++;
         int curSpace = spaceNum;
-        System.out.println("|———Write Statement:");
+//        System.out.println("|———Write Statement:");
         TreeNode treeNode = new TreeNode(TreeNode.WRITE_STATEMENT);
         skipNextToken(Token.WRITE);
         TreeNode writeNode = new TreeNode(TreeNode.WRITE);
         treeNode.setChildNode(writeNode);
-        for (int i = 0; i < spaceNum;i++)
-            System.out.print("     ");
-        System.out.println("|——— WRITE");
-        for (int i = 0; i < spaceNum;i++)
-            System.out.print("     ");
+//        for (int i = 0; i < spaceNum;i++)
+//            System.out.print("     ");
+//        System.out.println("|——— WRITE");
+//        for (int i = 0; i < spaceNum;i++)
+//            System.out.print("     ");
         treeNode.setChildNode(parseExpression());
         spaceNum = curSpace;
         TreeNode semiNode = new TreeNode(TreeNode.SEMICOLON);
         treeNode.setChildNode(semiNode);
-        for (int i = 0; i < spaceNum;i++)
-            System.out.print("     ");
-        System.out.println("|——— ;");
+//        for (int i = 0; i < spaceNum;i++)
+//            System.out.print("     ");
+//        System.out.println("|——— ;");
         skipNextToken(Token.SEMICOLON);
         return treeNode;
     }
@@ -624,39 +627,39 @@ public class Parser {
     {
         spaceNum++;
         int curSpace = spaceNum;
-        System.out.println("|———While Statement:");
+//        System.out.println("|———While Statement:");
         TreeNode treeNode = new TreeNode(TreeNode.WHILE_STATEMENT);
         TreeNode whileNode = new TreeNode(TreeNode.WHILE);
         treeNode.setChildNode(whileNode);
-        for (int i = 0;i < spaceNum; i++)
-            System.out.print("     ");
-        System.out.println("|——— While");
+//        for (int i = 0;i < spaceNum; i++)
+//            System.out.print("     ");
+//        System.out.println("|——— While");
         skipNextToken(Token.WHILE);
         TreeNode lparenNode = new TreeNode(TreeNode.LPAREN);
         treeNode.setChildNode(lparenNode);
-        for (int i = 0;i < spaceNum;i++)
-            System.out.print("     ");
-        System.out.println("|——— (");
+//        for (int i = 0;i < spaceNum;i++)
+//            System.out.print("     ");
+//        System.out.println("|——— (");
         skipNextToken(Token.LPAREN);
-        for (int i = 0;i < spaceNum;i++)
-            System.out.print("     ");
+//        for (int i = 0;i < spaceNum;i++)
+//            System.out.print("     ");
         treeNode.setChildNode(parseExpression());
         spaceNum = curSpace;
         TreeNode rparenNode = new TreeNode(TreeNode.RPAREN);
         treeNode.setChildNode(rparenNode);
-        for (int i = 0;i < spaceNum;i++)
-            System.out.print("     ");
-        System.out.println("|——— )");
+//        for (int i = 0;i < spaceNum;i++)
+//            System.out.print("     ");
+//        System.out.println("|——— )");
         skipNextToken(Token.RPAREN);
-        for (int i = 0;i < spaceNum;i++)
-            System.out.print("     ");
+//        for (int i = 0;i < spaceNum;i++)
+//            System.out.print("     ");
         treeNode.setChildNode(parseStatement());
         return treeNode;
     }
 
     private static TreeNode parseBreakStatement() throws Exception
     {
-        System.out.println("|———Break Statement:");
+//        System.out.println("|———Break Statement:");
         TreeNode treeNode = new TreeNode(TreeNode.BREAK_STATEMENT);
         TreeNode breakNode = new TreeNode(TreeNode.BREAK);
         treeNode.setChildNode(breakNode);
@@ -671,40 +674,40 @@ public class Parser {
     {
         spaceNum++;
         int curSpace = spaceNum;
-        System.out.println("|———If Statement:");
+//        System.out.println("|———If Statement:");
         TreeNode treeNode = new TreeNode(TreeNode.IF_STATEMENT);
         skipNextToken(Token.IF);
         TreeNode ifNode = new TreeNode(TreeNode.IF);
         treeNode.setChildNode(ifNode);
-        for (int i = 0;i < spaceNum;i++)
-            System.out.print("     ");
-        System.out.println("|——— IF");
+//        for (int i = 0;i < spaceNum;i++)
+//            System.out.print("     ");
+//        System.out.println("|——— IF");
         skipNextToken(Token.LPAREN);
         TreeNode lparenNode = new TreeNode(TreeNode.LPAREN);
         treeNode.setChildNode(lparenNode);
-        for (int i = 0;i < spaceNum;i++)
-            System.out.print("     ");
-        System.out.println("|——— (");
-        for (int i = 0;i < spaceNum;i++)
-            System.out.print("     ");
+//        for (int i = 0;i < spaceNum;i++)
+//            System.out.print("     ");
+//        System.out.println("|——— (");
+//        for (int i = 0;i < spaceNum;i++)
+//            System.out.print("     ");
         treeNode.setChildNode(parseExpression());
         skipNextToken(Token.RPAREN);
         spaceNum = curSpace;
         TreeNode rparenNoded = new TreeNode(TreeNode.RPAREN);
         treeNode.setChildNode(rparenNoded);
-        for (int i = 0;i < spaceNum;i++)
-            System.out.print("     ");
-        System.out.println("|——— )");
-        for (int i = 0;i < spaceNum;i++)
-            System.out.print("     ");
+//        for (int i = 0;i < spaceNum;i++)
+//            System.out.print("     ");
+//        System.out.println("|——— )");
+//        for (int i = 0;i < spaceNum;i++)
+//            System.out.print("     ");
         treeNode.setChildNode(parseStatement());
         if (getNextTokenType() == Token.ELSE)
         {
             TreeNode elseNode = new TreeNode(TreeNode.ELSE);
             treeNode.setChildNode(elseNode);
             skipNextToken(Token.ELSE);
-            for (int i = 0;i < spaceNum;i++)
-                System.out.print("     ");
+//            for (int i = 0;i < spaceNum;i++)
+//                System.out.print("     ");
             treeNode.setChildNode(parseStatement());
         }
         return treeNode;
@@ -714,23 +717,23 @@ public class Parser {
     {
         spaceNum++;
         int curSpace = spaceNum;
-        System.out.println("|——— Return Statement:");
+//        System.out.println("|——— Return Statement:");
         TreeNode treeNode = new TreeNode(TreeNode.RETURN_STATEMENT);
         skipNextToken(Token.RETURN);
         TreeNode returnNode = new TreeNode(TreeNode.RETURN);
         treeNode.setChildNode(returnNode);
-        for (int i = 0; i < spaceNum;i++)
-            System.out.print("     ");
-        System.out.println("|——— RETURN");
-        for (int i = 0; i < spaceNum;i++)
-            System.out.print("     ");
+//        for (int i = 0; i < spaceNum;i++)
+//            System.out.print("     ");
+//        System.out.println("|——— RETURN");
+//        for (int i = 0; i < spaceNum;i++)
+//            System.out.print("     ");
         treeNode.setChildNode(parseExpression());
         spaceNum = curSpace;
         TreeNode semiNode = new TreeNode(TreeNode.SEMICOLON);
         treeNode.setChildNode(semiNode);
-        for (int i = 0; i < spaceNum;i++)
-            System.out.print("     ");
-        System.out.println("|——— ;");
+//        for (int i = 0; i < spaceNum;i++)
+//            System.out.print("     ");
+//        System.out.println("|——— ;");
         skipNextToken(Token.SEMICOLON);
         return treeNode;
     }
@@ -739,11 +742,11 @@ public class Parser {
     {
         spaceNum++;
         int curSpace = spaceNum;
-        System.out.println("|———Expression:");
+//        System.out.println("|———Expression:");
         TreeNode treeNode = new TreeNode(TreeNode.EXPRESSION);
         treeNode.setTokenType(Token.LogicOrAndExpression);
-        for (int i = 0;i < spaceNum; i++)
-            System.out.print("     ");
+//        for (int i = 0;i < spaceNum; i++)
+//            System.out.print("     ");
         TreeNode leftChild = logicEqualExpression();
         treeNode.setChildNode(leftChild);
 //        //指针赋值中的取地址符号
@@ -762,12 +765,12 @@ public class Parser {
         {
             treeNode.setChildNode(logicOperator());
             spaceNum = curSpace;
-            for (int i = 0;i < spaceNum; i++)
-                System.out.print("     ");
-            iterator.previous();
-            System.out.println("|——— " + logicOperator().getValue());
-            for (int i = 0;i < spaceNum; i++)
-                System.out.print("     ");
+//            for (int i = 0;i < spaceNum; i++)
+//                System.out.print("     ");
+//            iterator.previous();
+//            System.out.println("|——— " + logicOperator().getValue());
+//            for (int i = 0;i < spaceNum; i++)
+//                System.out.print("     ");
             treeNode.setChildNode(logicEqualExpression());
         }else
         {
@@ -779,28 +782,30 @@ public class Parser {
     private static TreeNode logicEqualExpression() throws Exception
     {
         spaceNum++;
-        System.out.println("|———Logical Expression:");
-        TreeNode treeNode = new TreeNode(TreeNode.EXPRESSION);
+//        System.out.println("|———Logical Expression:");
+        TreeNode treeNode = new TreeNode(TreeNode.LogicEqualExpression);
         treeNode.setTokenType(Token.LogicEqualExpression);
-        for (int i = 0;i < spaceNum; i++)
-            System.out.print("     ");
+//        for (int i = 0;i < spaceNum; i++)
+//            System.out.print("     ");
         TreeNode leftChild = logicNotEqualExpression();
         if (checkNextTokenType(Token.EQEQ))
         {
             treeNode.setChildNode(leftChild);
             treeNode.setChildNode(logicOperator());
-            for (int i = 0;i < spaceNum; i++)
-                System.out.print("     ");
+//            for (int i = 0;i < spaceNum; i++)
+//                System.out.print("     ");
             treeNode.setChildNode(logicNotEqualExpression());
         }else
+        {
             return leftChild;
+        }
         return treeNode;
     }
 
     private static TreeNode logicNotEqualExpression() throws Exception
     {
         int curSpace = spaceNum;
-        TreeNode treeNode = new TreeNode(TreeNode.EXPRESSION);
+        TreeNode treeNode = new TreeNode(TreeNode.LogicNotEqualExpression);
         treeNode.setTokenType(Token.LogicNotEqualExpression);
         TreeNode leftChild = addibleExpression();
         if (checkNextTokenType(Token.NE, Token.LT, Token.GT))
@@ -808,15 +813,17 @@ public class Parser {
             treeNode.setChildNode(leftChild);
             treeNode.setChildNode(logicOperator());
             spaceNum = curSpace;
-            for (int i = 0;i < spaceNum; i++)
-                System.out.print("     ");
-            iterator.previous();
-            System.out.println("|——— "+ logicOperator().getValue());
-            for (int i = 0;i < spaceNum; i++)
-                System.out.print("     ");
+//            for (int i = 0;i < spaceNum; i++)
+//                System.out.print("     ");
+//            iterator.previous();
+//            System.out.println("|——— "+ logicOperator().getValue());
+//            for (int i = 0;i < spaceNum; i++)
+//                System.out.print("     ");
             treeNode.setChildNode(addibleExpression());
         }else
+        {
             return leftChild;
+        }
         return treeNode;
     }
 
@@ -825,63 +832,64 @@ public class Parser {
         spaceNum++;
         //这里的curSpaceNum用于使加号与Arithmetic Expression在同一级
         int curSpaceNum = spaceNum - 1;
-        System.out.println("|———Arithmetic Expression:");
-        TreeNode treeNode = new TreeNode(TreeNode.EXPRESSION);
+//        System.out.println("|———Arithmetic Expression:");
+        TreeNode treeNode = new TreeNode(TreeNode.AddibleExpression);
         treeNode.setTokenType(Token.AddibleExpression);
-        for (int i = 0;i < spaceNum; i++)
-            System.out.print("     ");
+//        for (int i = 0;i < spaceNum; i++)
+//            System.out.print("     ");
         TreeNode leftChild = term();
         if (checkNextTokenType(Token.ADD))
         {
             spaceNum = curSpaceNum;
             TreeNode addNode = new TreeNode(TreeNode.ADD);
             treeNode.setChildNode(addNode);
-            for (int i = 0;i < spaceNum; i++)
-                System.out.print("     ");
-            System.out.println("|——— +");
+//            for (int i = 0;i < spaceNum; i++)
+//                System.out.print("     ");
+//            System.out.println("|——— +");
             treeNode.setChildNode(leftChild);
             treeNode.setChildNode(addibleOperator());
-            for (int i = 0;i < spaceNum; i++)
-                System.out.print("     ");
+//            for (int i = 0;i < spaceNum; i++)
+//                System.out.print("     ");
             treeNode.setChildNode(addibleExpression());
         }else if (checkNextTokenType(Token.SUB))    //?????
         {
             spaceNum = curSpaceNum;
             TreeNode subNode = new TreeNode(TreeNode.SUB);
             treeNode.setChildNode(subNode);
-            for (int i = 0;i < spaceNum; i++)
-                System.out.print("     ");
-            System.out.println("|——— -");
+//            for (int i = 0;i < spaceNum; i++)
+//                System.out.print("     ");
+//            System.out.println("|——— -");
             treeNode.setChildNode(leftChild);
             TreeNode subOperatorNode = new TreeNode(TreeNode.OPERATOR);
             subOperatorNode.setTokenType(Token.ADD);
             treeNode.setChildNode(subOperatorNode);
-            for (int i = 0;i < spaceNum; i++)
-                System.out.print("     ");
+//            for (int i = 0;i < spaceNum; i++)
+//                System.out.print("     ");
             treeNode.setChildNode(addibleExpression());
-        }else
+        }else{
             return leftChild;
+        }
         return treeNode;
     }
 
     private static TreeNode term() throws Exception
     {
         spaceNum++;
-        System.out.println("|———Term:");
-        TreeNode treeNode = new TreeNode(TreeNode.EXPRESSION);
+//        System.out.println("|———Term:");
+        TreeNode treeNode = new TreeNode(TreeNode.TERM);
         treeNode.setTokenType(Token.TermExpression);
-        for (int i = 0;i < spaceNum; i++)
-            System.out.print("     ");
+//        for (int i = 0;i < spaceNum; i++)
+//            System.out.print("     ");
         TreeNode leftChild = notExpression();
         if (checkNextTokenType(Token.MUL, Token.DIV))
         {
-            for (int i = 0;i < spaceNum; i++)
-                System.out.print("     ");
+//            for (int i = 0;i < spaceNum; i++)
+//                System.out.print("     ");
             if (checkNextTokenType(Token.MUL))
             {
                 TreeNode mulNode = new TreeNode(TreeNode.MUL);
                 treeNode.setChildNode(mulNode);
-                System.out.println("|——— *");
+//                System.out.println("|——— *");
                 treeNode.setChildNode(leftChild);
                 treeNode.setChildNode(multiplyOperator());
             }
@@ -889,29 +897,31 @@ public class Parser {
             {
                 TreeNode divNode = new TreeNode(TreeNode.DIV);
                 treeNode.setChildNode(divNode);
-                System.out.println("|——— /");
+//                System.out.println("|——— /");
                 treeNode.setChildNode(leftChild);
                 treeNode.setChildNode(multiplyOperator());
             }
-            for (int i = 0;i < spaceNum; i++)
-                System.out.print("     ");
+//            for (int i = 0;i < spaceNum; i++)
+//                System.out.print("     ");
             treeNode.setChildNode(term());
         }else
+        {
             return leftChild;
+        }
         return treeNode;
     }
 
     private static TreeNode notExpression() throws Exception
     {
-        TreeNode treeNode = new TreeNode(TreeNode.EXPRESSION);
+        TreeNode treeNode = new TreeNode(TreeNode.NotExpression);
         treeNode.setTokenType(Token.NotExpression);
         if (checkNextTokenType(Token.BANG))
         {
             treeNode.setChildNode(notOperator());
-            iterator.previous();
-            System.out.println("|——— "+ notOperator().getValue());
-            for (int i = 0;i < spaceNum;i++)
-                System.out.print("     ");
+//            iterator.previous();
+//            System.out.println("|——— "+ notOperator().getValue());
+//            for (int i = 0;i < spaceNum;i++)
+//                System.out.print("     ");
             treeNode.setChildNode(factor());
         }else
         {
@@ -960,7 +970,7 @@ public class Parser {
         if (iterator.hasNext())
         {
             currentToken = iterator.next();
-            System.out.println("|———Literal:"+ currentToken.getValue());
+//            System.out.println("|———Literal:"+ currentToken.getValue());
             int tokenType = currentToken.getType();
             TreeNode treeNode = new TreeNode(TreeNode.LITERAL);
             treeNode.setTokenType(tokenType);
@@ -1043,7 +1053,7 @@ public class Parser {
         if (checkNextTokenType(Token.ID))
         {
             currentToken = iterator.next();
-            System.out.println("|———Variable:" + currentToken.getValue());
+//            System.out.println("|———Variable:" + currentToken.getValue());
             treeNode.setValue(currentToken.getValue());
         }else
             throw new Exception("line " + getNextTokenLineNo() + " : next token should be ID." );

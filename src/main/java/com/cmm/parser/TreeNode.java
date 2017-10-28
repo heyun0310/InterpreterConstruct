@@ -66,12 +66,19 @@ public class TreeNode {
     public static final int ADD = 38;
     public static final int SUB = 39;
     public static final int DIV = 40;
+    public static final int ID = 41;
+    public static final int LogicEqualExpression = 42;
+    public static final int LogicNotEqualExpression = 43;
+    public static final int AddibleExpression = 44;
+    public static final int TERM = 45;
+    public static final int NotExpression = 46;
 
     private int nodeType;
     private int tokenType;
     private String value;
+    private static int heightInTree = 0;
     //用于储存指向孩子节点的指针的数组
-    private LinkedList<TreeNode> childrenList = new LinkedList<TreeNode>();
+    public LinkedList<TreeNode> childrenList = new LinkedList<TreeNode>();
 
     //用于二维数组
     //private LinkedList<TreeNode> arrayElementsLine0 = new LinkedList<TreeNode>();
@@ -120,94 +127,136 @@ public class TreeNode {
         }
     }
 
-    private String printNode(int nodeType)
+    public void printNode(int nodeType)
     {
         switch (nodeType)
         {
             case NULL:
-                return "|——— Program:";
+                System.out.println("|——— Program:");
+                return;
             case DECLARE_STATEMENT:
-                return "|——— Declare Statement:";
+                System.out.println("|——— Declare Statement:");
+                return;
             case BLOCK_STATEMENT:
-                return "|——— Block Statement:";
+                System.out.println("|——— Block Statement:");
+                return;
             case ASSIGN_STATEMENT:
-                return "|——— Assign Statement:";
+                System.out.println("|——— Assign Statement:");
+                return;
             case READ_STATEMENT:
-                return "|——— Read Statement:";
+                System.out.println("|——— Read Statement:");
+                return;
             case WRITE_STATEMENT:
-                return "|——— Write Statement:";
+                System.out.println("|——— Write Statement:");
+                return;
             case EXPRESSION:
-                return "|——— Expression";
+                System.out.println("|——— Expression");
+                return;
             case WHILE_STATEMENT:
-                return "|——— While Statement:";
+                System.out.println("|——— While Statement:");
+                return;
             case BREAK_STATEMENT:
-                return "|——— Break Statement:";
+                System.out.println("|——— Break Statement:");
+                return;
             case IF_STATEMENT:
-                return "|——— If Statement:";
+                System.out.println("|——— If Statement:");
+                return;
             case VARIABLE:
-                return "|——— Variable:";
+                System.out.println("|——— Variable: " + this.getValue());
+                return;
             case LITERAL:
-                return "|——— Literal:";
+                System.out.println("|——— Literal: " + this.getValue());
+                return;
             case FACTOR:
-                return "|——— Factor:";
+                System.out.println("|——— Factor:");
+                return;
             case ARRAY_INITIALIZER:
-                return "|——— Array Initializer:";
+                System.out.println("|——— Array Initializer:");
+                return;
             case RETURN_STATEMENT:
-                return "|——— Return Statement:";
+                System.out.println("|——— Return Statement:");
+                return;
             case INT:
-                return "|——— INT";
+                System.out.println("|——— INT");
+                return;
             case REAL:
-                return "|——— REAL";
+                System.out.println("|——— REAL");
+                return;
             case MUL:
-                return "|——— *";
+                System.out.println("|——— *");
+                return;
             case EQ:
-                return "|——— =";
+                System.out.println("|——— =");
+                return;
             case GetAddress:
-                return "|——— &";
+                System.out.println("|——— &");
+                return;
             case LBRACE:
-                return "|——— {";
+                System.out.println("|——— {");
+                return;
             case RBRACE:
-                return "|——— }";
+                System.out.println("|——— }");
+                return;
             case LBRACK:
-                return "|——— [";
+                System.out.println("|——— [");
+                return;
             case RBRACK:
-                return "|——— ]";
+                System.out.println("|——— ]");
+                return;
             case ARRAY_LITERAL:
-                return "|——— Array Literal:";
+                System.out.println("|——— Array Literal:");
+                return;
             case COMMA:
-                return "|——— ,";
+                System.out.println("|——— ,");
+                return;
             case LPAREN:
-                return "|——— (";
+                System.out.println("|——— (");
+                return;
             case RPAREN:
-                return "|——— )";
+                System.out.println("|——— )");
+                return;
             case STATEMENT_LIST:
-                return "Statement List";
+                System.out.println("|——— Statement List");
+                return;
             case SEMICOLON:
-                return "|——— ;";
+                System.out.println("|——— ;");
+                return;
             case READ:
-                return "|——— READ";
+                System.out.println("|——— READ");
+                return;
             case WRITE:
-                return "|——— WRITE";
+                System.out.println("|——— WRITE");
+                return;
             case WHILE:
-                return "|——— WHILE";
+                System.out.println("|——— WHILE");
+                return;
             case BREAK:
-                return "|——— BREAK";
+                System.out.println("|——— BREAK");
+                return;
             case IF:
-                return "|——— IF";
+                System.out.println("|——— IF");
+                return;
             case ELSE:
-                return "|——— ELSE";
+                System.out.println("|——— ELSE");
+                return;
             case RETURN:
-                return "|——— RETURN";
+                System.out.println("|——— RETURN");
+                return;
             case ADD:
-                return "|——— +";
+                System.out.println("|——— +");
+                return;
             case SUB:
-                return "|——— -";
+                System.out.println("|——— -");
+                return;
             case DIV:
-                return "|——— /";
+                System.out.println("|——— /");
+                return;
             default:
-                    return "";
+//                System.out.print("");
+                return;
         }
     }
+
 
     public int getNodeType() {
         return nodeType;

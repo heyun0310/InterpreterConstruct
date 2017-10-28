@@ -11,20 +11,20 @@ import java.util.LinkedList;
  */
 public class Util {
 
-    public static LinkedList<TreeNode> getTokenListFromFile(String fileStr) throws Exception{
+    public static TreeNode getTokenListFromFile(String fileStr) throws Exception{
         FileReader fileReader;
         fileReader = new FileReader(fileStr);
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(fileStr),"UTF-8"));
         LinkedList<Token> lexerList = Lexer.lexicalAnalyse(bufferedReader);
-        LinkedList<TreeNode> parserList = Parser.syntacticAnalyse(lexerList);
+        TreeNode rootNode = Parser.syntacticAnalyse(lexerList);
         bufferedReader.close();
         fileReader.close();
-        return parserList;
+        return rootNode;
     }
 
-    public static LinkedList<TreeNode> getTokenListFromKeyboardInput(BufferedReader br) throws Exception{
+    public static TreeNode getTokenListFromKeyboardInput(BufferedReader br) throws Exception{
         LinkedList<Token> lexerList = Lexer.lexicalAnalyse(br);
-        LinkedList<TreeNode> parserList = Parser.syntacticAnalyse(lexerList);
-        return parserList;
+        TreeNode rootNode = Parser.syntacticAnalyse(lexerList);
+        return rootNode;
     }
 }

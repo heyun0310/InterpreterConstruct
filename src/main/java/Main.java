@@ -3,6 +3,7 @@ import com.cmm.ANTLR.CMinusMinusParser;
 import com.cmm.lexer.Token;
 import com.cmm.lexer.Util;
 import com.cmm.parser.TreeNode;
+import com.cmm.parser.TraverseTree;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 
@@ -62,7 +63,7 @@ public class Main {
         System.out.print(string);
         char[] chars = string.toCharArray();
         char c = chars[0];
-        LinkedList<TreeNode> treeNodes = new LinkedList<TreeNode>();
+        TreeNode rootNode = new TreeNode(TreeNode.NULL);
 
         switch (c){
             case '1':
@@ -74,11 +75,13 @@ public class Main {
                 InputStream is = new ByteArrayInputStream(by);
                 InputStreamReader isr = new InputStreamReader(is);
                 bufferedReader = new BufferedReader(isr);
-                treeNodes = Util.getTokenListFromKeyboardInput(bufferedReader);
+                rootNode = Util.getTokenListFromKeyboardInput(bufferedReader);
                 break;
             case '2':
                 System.out.println(" ");
-                treeNodes = Util.getTokenListFromFile(inputFile);
+                rootNode = Util.getTokenListFromFile(inputFile);
+                TraverseTree traverseTree = new TraverseTree();
+                traverseTree.visitTree(rootNode, 0);
                 break;
         }
 //        for(TreeNode treeNode : treeNodes) {
