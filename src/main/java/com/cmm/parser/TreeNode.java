@@ -135,6 +135,15 @@ public class TreeNode {
             case NULL:
                 System.out.println("|——— Program:");
                 return;
+            case LogicEqualExpression:
+                System.out.println("|——— Logic Equal Expression");
+                return;
+            case LogicNotEqualExpression:
+                System.out.println("|——— Logic Not Equal Expression");
+                return;
+            case AddibleExpression:
+                System.out.println("|——— AddibleExpression");
+                return;
             case DECLARE_STATEMENT:
                 System.out.println("|——— Declare Statement:");
                 return;
@@ -251,6 +260,12 @@ public class TreeNode {
                 return;
             case DIV:
                 System.out.println("|——— /");
+                return;
+            case TERM:
+                System.out.println("|——— TERM");
+                return;
+            case NotExpression:
+                System.out.println("|——— NotExpression");
                 return;
             default:
 //                System.out.print("");

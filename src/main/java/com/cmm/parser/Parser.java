@@ -868,9 +868,11 @@ public class Parser {
 //                System.out.print("     ");
             treeNode.setChildNode(addibleOperator());
             treeNode.setChildNode(addibleExpression());
-        }else{
-            return leftChild;
         }
+//        else{
+//            return leftChild;
+//        }
+
         return treeNode;
     }
 
@@ -945,8 +947,12 @@ public class Parser {
                     treeNode.setChildNode(literal());
                     break;
                 case Token.LPAREN:
+                    TreeNode lparenNode = new TreeNode(TreeNode.LPAREN);
+                    treeNode.setChildNode(lparenNode);
                     skipNextToken(Token.LPAREN);
-                    treeNode = parseExpression();
+                    treeNode.setChildNode(parseExpression());
+                    TreeNode rparenNode = new TreeNode(TreeNode.RPAREN);
+                    treeNode.setChildNode(rparenNode);
                     skipNextToken(Token.RPAREN);
                     break;
                 case Token.ADD:
